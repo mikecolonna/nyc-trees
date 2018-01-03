@@ -10,10 +10,6 @@ async function getTrees() {
     }
 }
 
-
-function parseTrees(trees, borough, species) {
-  let result = trees.filter(tree => (tree.boroname == borough && tree.spc_latin == species))
-
 function getSpeciesNames(trees) {
     let names = trees.map((tree) => {
         return tree.spc_latin
@@ -21,7 +17,7 @@ function getSpeciesNames(trees) {
     return new Set(names)
 }
 
-function parseTrees(trees, borough) {
+function parseTrees(trees, borough, species) {
   /* this works but looks bad
   for (i = 0; i < 1000; i++){
     let currentTree = trees[i]
@@ -29,7 +25,7 @@ function parseTrees(trees, borough) {
       delete result[i]
     }
   }*/
-  let result = trees.filter(tree => tree.boroname == borough)
+  let result = trees.filter(tree => tree.boroname == borough && tree.spc_latin == species)
   console.log(result)
   return result
 }
@@ -54,7 +50,8 @@ const form = document.getElementById('form')
 form.onsubmit = (e) => {
     e.preventDefault()
     let boroughAnswer = document.getElementById('borough').value
-    renderTrees(parseTrees(trees, boroughAnswer))
+    let speciesAnswer = document.getElementById('species').value
+    renderTrees(parseTrees(trees, boroughAnswer, speciesAnswer))
 }
 
 window.onload = () => {
@@ -69,7 +66,7 @@ window.onload = () => {
     getTrees()
 }
 
-/* When the user clicks on the button, 
+/* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
