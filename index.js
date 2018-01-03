@@ -5,26 +5,30 @@ async function getTrees() {
         let response = await fetch("https://data.cityofnewyork.us/resource/5rq2-4hqu.json")
         trees = await response.json()
         console.log(trees)
+        getSpeciesNames()
     } catch (error) {
         console.log(error)
     }
 }
 
-function getSpeciesNames(trees) {
+function getSpeciesNames() {
     let names = trees.map((tree) => {
         return tree.spc_latin
     })
-    return new Set(names)
+    var namesNoDuplicates = new Set(names)
+
+    var speciesDropdown = document.getElementById("species");
+    namesNoDuplicates.forEach((species) =>{
+      var newSpecies = document.createElement("option");
+      newSpecies.text = species;
+      speciesDropdown.add(newSpecies);
+    })
+
+    return namesNoDuplicates
 }
 
 function parseTrees(trees, borough, species) {
-  /* this works but looks bad
-  for (i = 0; i < 1000; i++){
-    let currentTree = trees[i]
-    if (!(currentTree.boroname == borough)){
-      delete result[i]
-    }
-  }*/
+  console.log("in parse trees, borough:" + borough)
   let result = trees.filter(tree => tree.boroname == borough && tree.spc_latin == species)
   console.log(result)
   return result
@@ -32,18 +36,38 @@ function parseTrees(trees, borough, species) {
 
 function renderTrees(trees) {
     const treesdiv = document.getElementById('trees')
+    let boroughAnswer = document.getElementById('borough').value
+    let speciesAnswer = document.getElementById('species').value
+    treesdiv.innerHTML = "<p>There are " + trees.length + " " + speciesAnswer + " trees in " + boroughAnswer + "</p>"
     let opentag = "<div>"
-    let endtag = "</div>"
+    let endtag = "</div><br>"
     trees.forEach(function(tree) {
         let treeid = "<span>(" + tree.tree_id + ")</span> "
         let boroheader = "<span>" + tree.boroname + ", " + tree.zip_city + ", " + tree.zipcode + "</span><br>"
         let species = "<span><i>" + tree.spc_latin + "</i></span> "
         let common = "<span>" + tree.spc_common + "</span> "
-        let status = "<span>Status: " + tree.status + " Health: " + tree.health + "</span> "
         let linebreak = "<br>"
-        treesdiv.innerHTML += opentag + treeid + boroheader + species + common + status + linebreak + endtag
+        let status = "<span>Status: " + tree.status + " Health: " + tree.health + "</span>"
+        let moreinfodiv = "<div style=\"display:none\" id=\"div" + tree.tree_id + "\">" + status + "</div>"
+        let moreinfo = "<button class=\"button\" id=\"" + tree.tree_id + "\">More info</button>"
+        treesdiv.innerHTML += opentag + treeid + boroheader + species + common
+                            + moreinfo + moreinfodiv + linebreak + endtag
+    })
+
+    let buttons = Array.from(document.getElementsByClassName('button'))
+    buttons.forEach(function(button) {
+        let id = button.id
+        let infodiv = document.getElementById("div" + id)
+        button.addEventListener('click', () => {
+            if (infodiv.style.display === "none") {
+                infodiv.style.display = "block"
+            } else {
+                infodiv.style.display = "none"
+            }
+        })
     })
 }
+
 
 //const submit = document.getElementById('submit')
 const form = document.getElementById('form')
