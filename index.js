@@ -1,5 +1,8 @@
 let trees
 
+/*Sends a request to the API and stores the resulting JSON in the global
+variable trees.  Then calls getSpeciesNames
+*/
 async function getTrees() {
     try {
         let response = await fetch("https://data.cityofnewyork.us/resource/5rq2-4hqu.json")
@@ -11,6 +14,9 @@ async function getTrees() {
     }
 }
 
+/*Creates a set of all the species of trees represented in the JSON data.
+Sets the options for the species dropdown menu.  Returns the set.
+*/
 function getSpeciesNames() {
     let names = trees.map((tree) => {
         return tree.spc_latin
@@ -27,6 +33,9 @@ function getSpeciesNames() {
     return namesNoDuplicates
 }
 
+/*Takes the initial JSON data from the API and returns JSON data containing
+only trees that fit the criteria the user chose in the dropdown menus.
+*/
 function parseTrees(trees, borough, species) {
   console.log("in parse trees, borough:" + borough)
   let result = trees.filter(tree => tree.boroname == borough && tree.spc_latin == species)
@@ -34,6 +43,9 @@ function parseTrees(trees, borough, species) {
   return result
 }
 
+/*Displays the trees represented in the JSON data given as its parameter to the
+DOM.  Creates the More Info buttons and adds their event listeners
+*/
 function renderTrees(trees) {
     const treesdiv = document.getElementById('trees')
     let boroughAnswer = document.getElementById('borough').value
@@ -54,6 +66,7 @@ function renderTrees(trees) {
                             + moreinfo + moreinfodiv + linebreak + endtag
     })
 
+    //adding the event listeners to each button
     let buttons = Array.from(document.getElementsByClassName('button'))
     buttons.forEach(function(button) {
         let id = button.id
@@ -68,8 +81,9 @@ function renderTrees(trees) {
     })
 }
 
-
-//const submit = document.getElementById('submit')
+/*Adds a submit event listener to the form that calls parseTrees and
+renderTrees
+*/
 const form = document.getElementById('form')
 form.onsubmit = (e) => {
     e.preventDefault()
@@ -78,6 +92,9 @@ form.onsubmit = (e) => {
     renderTrees(parseTrees(trees, boroughAnswer, speciesAnswer))
 }
 
+/*Specifies the onload event listener for the window to display a greeting
+for 5 seconds and calls getTrees
+*/
 window.onload = () => {
     const greeting = document.getElementById("greeting")
     greeting.innerHTML = "WELCOME!!!!"
@@ -85,7 +102,7 @@ window.onload = () => {
         greeting.innerHTML = ""
     }, 5000)
 
-    const list = document.getElementById("trees")
+    //const list = document.getElementById("trees")
 
     getTrees()
 }
