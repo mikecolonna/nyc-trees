@@ -1,14 +1,32 @@
+let trees
 
 async function getTrees() {
     try {
         let response = await fetch("https://data.cityofnewyork.us/resource/5rq2-4hqu.json")
+<<<<<<< HEAD
         let trees = await response.json()
-        let boroughAnswer = document.getElementById('borough').value
-        renderTrees(parseTrees(trees, boroughAnswer))
+        //let boroughAnswer = document.getElementById('borough').value
+        //let speciesAnswer = document.getElementById('species').value
+        renderTrees(parseTrees(trees, "Queens", "Acer rubrum"))
         //console.log(trees)
+=======
+        trees = await response.json()
+        console.log(trees)
+>>>>>>> 195eab48ac62c727c33f5c7f0556de173a3bf4f8
     } catch (error) {
         console.log(error)
     }
+}
+
+<<<<<<< HEAD
+function parseTrees(trees, borough, species) {
+  let result = trees.filter(tree => (tree.boroname == borough && tree.spc_latin == species))
+=======
+function getSpeciesNames(trees) {
+    let names = trees.map((tree) => {
+        return tree.spc_latin
+    })
+    return new Set(names)
 }
 
 function parseTrees(trees, borough) {
@@ -20,6 +38,7 @@ function parseTrees(trees, borough) {
     }
   }*/
   let result = trees.filter(tree => tree.boroname == borough)
+>>>>>>> 195eab48ac62c727c33f5c7f0556de173a3bf4f8
   console.log(result)
   return result
 }
@@ -43,7 +62,8 @@ function renderTrees(trees) {
 const form = document.getElementById('form')
 form.onsubmit = (e) => {
     e.preventDefault()
-    getTrees()
+    let boroughAnswer = document.getElementById('borough').value
+    renderTrees(parseTrees(trees, boroughAnswer))
 }
 
 window.onload = () => {
@@ -55,6 +75,7 @@ window.onload = () => {
 
     const list = document.getElementById("trees")
 
+    getTrees()
 }
 
 /* When the user clicks on the button, 
