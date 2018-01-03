@@ -3,23 +3,17 @@ async function getTrees() {
     try {
         let response = await fetch("https://data.cityofnewyork.us/resource/5rq2-4hqu.json")
         let trees = await response.json()
-        let boroughAnswer = document.getElementById('borough').value
-        renderTrees(parseTrees(trees, boroughAnswer))
+        //let boroughAnswer = document.getElementById('borough').value
+        //let speciesAnswer = document.getElementById('species').value
+        renderTrees(parseTrees(trees, "Queens", "Acer rubrum"))
         //console.log(trees)
     } catch (error) {
         console.log(error)
     }
 }
 
-function parseTrees(trees, borough) {
-  /* this works but looks bad
-  for (i = 0; i < 1000; i++){
-    let currentTree = trees[i]
-    if (!(currentTree.boroname == borough)){
-      delete result[i]
-    }
-  }*/
-  let result = trees.filter(tree => tree.boroname == borough)
+function parseTrees(trees, borough, species) {
+  let result = trees.filter(tree => (tree.boroname == borough && tree.spc_latin == species))
   console.log(result)
   return result
 }
