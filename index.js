@@ -1,14 +1,20 @@
+let trees
 
 async function getTrees() {
     try {
         let response = await fetch("https://data.cityofnewyork.us/resource/5rq2-4hqu.json")
-        let trees = await response.json()
-        let boroughAnswer = document.getElementById('borough').value
-        renderTrees(parseTrees(trees, boroughAnswer))
-        //console.log(trees)
+        trees = await response.json()
+        console.log(trees)
     } catch (error) {
         console.log(error)
     }
+}
+
+function getSpeciesNames(trees) {
+    let names = trees.map((tree) => {
+        return tree.spc_latin
+    })
+    return new Set(names)
 }
 
 function parseTrees(trees, borough) {
@@ -43,7 +49,8 @@ function renderTrees(trees) {
 const form = document.getElementById('form')
 form.onsubmit = (e) => {
     e.preventDefault()
-    getTrees()
+    let boroughAnswer = document.getElementById('borough').value
+    renderTrees(parseTrees(trees, boroughAnswer))
 }
 
 window.onload = () => {
@@ -55,4 +62,5 @@ window.onload = () => {
 
     const list = document.getElementById("trees")
 
+    getTrees()
 }
