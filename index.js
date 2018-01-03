@@ -3,21 +3,26 @@ async function getTrees() {
     try {
         let response = await fetch("https://data.cityofnewyork.us/resource/5rq2-4hqu.json")
         let trees = await response.json()
-        renderTrees(trees)
-        console.log(trees)
+        let boroughAnswer = document.getElementById('borough').value
+        renderTrees(parseTrees(trees, boroughAnswer))
+        //console.log(trees)
     } catch (error) {
         console.log(error)
     }
 }
 
-<<<<<<< HEAD
-function parseTrees(trees, parameters) {
-    
+function parseTrees(trees, borough) {
+  /* this works but looks bad
+  for (i = 0; i < 1000; i++){
+    let currentTree = trees[i]
+    if (!(currentTree.boroname == borough)){
+      delete result[i]
+    }
+  }*/
+  let result = trees.filter(tree => tree.boroname == borough)
+  console.log(result)
+  return result
 }
-
-function renderTrees(trees) {
-=======
->>>>>>> b47e72cfe39223a0fae23cca64e2019a5968a3ce
 
 function renderTrees(trees) {
     const treesdiv = document.getElementById('trees')
