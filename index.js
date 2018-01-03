@@ -10,12 +10,28 @@ async function getTrees() {
     }
 }
 
+<<<<<<< HEAD
 function parseTrees(trees, parameters) {
     
 }
 
 function renderTrees(trees) {
+=======
+>>>>>>> b47e72cfe39223a0fae23cca64e2019a5968a3ce
 
+function renderTrees(trees) {
+    const treesdiv = document.getElementById('trees')
+    let opentag = "<div>"
+    let endtag = "</div>"
+    trees.forEach(function(tree) {
+        let treeid = "<span>(" + tree.tree_id + ")</span> "
+        let boroheader = "<span>" + tree.boroname + ", " + tree.zip_city + ", " + tree.zipcode + "</span><br>"
+        let species = "<span><i>" + tree.spc_latin + "</i></span> "
+        let common = "<span>" + tree.spc_common + "</span> "
+        let status = "<span>Status: " + tree.status + " Health: " + tree.health + "</span> "
+        let linebreak = "<br>"
+        treesdiv.innerHTML += opentag + treeid + boroheader + species + common + status + linebreak + endtag
+    })
 }
 
 //const submit = document.getElementById('submit')
