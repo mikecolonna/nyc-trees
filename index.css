@@ -8,6 +8,10 @@ div { margin: 20px; }
    height: 29px;
    overflow: hidden;
    width: 240px;
+   position: absolute;
+   top: 50%;
+   margin:auto;
+   display:block;
 }
 
 .styled-select select {
@@ -124,10 +128,16 @@ select#soflow-color {
     background-color: #000;
     border: none;
     color: white;
+    /*padding-top: 10px;*/
     /*padding: 5px 10px;*/
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+    /*text-decoration: none;*/
+    /*display: inline-block;*/
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    font-size: 50px;
+    height: 29px;
+    width: 240px;
 }
 
